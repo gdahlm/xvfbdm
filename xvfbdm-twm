@@ -8,7 +8,7 @@
 ### BEGIN INIT INFO
 # Provides:          xvfbdm-twm
 # Should-Start:      
-# Required-Start:    $local_fs $remote_fs xvfbd
+# Required-Start:    $local_fs $remote_fs xvfbdm
 # Required-Stop:     $local_fs $remote_fs
 # Default-Start:     3 4 5
 # Default-Stop:      0 1 2 6

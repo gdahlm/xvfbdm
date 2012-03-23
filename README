@@ -1,17 +1,25 @@
-These scripts will start Xvfb (http://www.xfree86.org/4.0.1/Xvfb.1.html)
+These scripts will start Xvfb (http://www.xfree86.org/4.0.1/Xvfb.1.html) as a daemon.
 
-They are inteded to be used on Init/LSB type systems like RHEL or Debian.
-
-They were written to support image genration for Oracle 9i Application Server.
-
+They are written for init/LSB type systems like RHEL or Debian.
+They were originally written to support image generation for Oracle 9i Application Server.
 As uploaded they will start an X server on localhost:5
 
 
-To install copy xvfbdm and xvfbdm-twm to /etc/init.d
+INSTALL:
 
+You will need Xvfb and twm installed on your host to use these scripts.
+On RHEL/Centos/OEL you can install the packages with the following command
+
+   yum install xorg-x11-server-Xvfb xorg-x11-twm
+
+On Debian:
+   
+   apt-get install xvfb twm
+
+After you insure those packages are installed copy xvfbdm and xvfbdm-twm to /etc/init.d
 On RHEL/Centos/OEL 5 run the following commands
 
-   chkconfig xvfbdm on 
+   chkconfig xvfbdm on
    chkconfig xvfbdm-twm on 
 
 This will set them up to auto start and stop, you can start them manualy with
@@ -21,3 +29,7 @@ This will set them up to auto start and stop, you can start them manualy with
 
 
 They also have restart and stop and status functionality with the service command.
+
+If you ssh into the host with X11 forwarding support or if you set your DISPLAY variable you can view the current state of the screen by running the following command.
+
+xwud -in /usr/tmp/Xvfb_screen0

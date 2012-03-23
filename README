@@ -1,0 +1,5 @@
+These scripts will start Xvfb (http://www.xfree86.org/4.0.1/Xvfb.1.html)
+
+They are inteded to be used on Init/LSB type systems like RHEL or Debian.
+
+

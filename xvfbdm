@@ -1,0 +1,69 @@
+#!/bin/bash
+#
+# /etc/rc.d/init.d/xvfbdm
+#
+# chkconfig: 345 95 28
+# description: Starts/Stops X Virtual Framebuffer server
+# processname: Xvfb
+#
+
+### BEGIN INIT INFO
+# Provides:          xvfbdm
+# Should-Start:
+# Required-Start:    $local_fs $remote_fs 
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     3 4 5
+# Default-Stop:      0 1 2 6
+# Short-Description: Xvfb X11 Virtual Frame Buffer Daemon
+# Description:       Init script for Xvfb to support pdf printing on Oracle
+### END INIT INFO
+#
+# Author:       Greg Dahlman <gdahlm@hotmail.com>
+#
+
+	
+. /etc/init.d/functions
+	
+[ "${NETWORKING}" = "no" ] && exit 0
+	
+PROG="/usr/bin/Xvfb"
+PROG_OPTIONS=":5 -screen 0 640x480x24 -fbdir /usr/tmp"
+PROG_OUTPUT="/tmp/Xvfb.out"
+	
+case "$1" in
+    start)
+        echo -n "Starting : X Virtual Frame Buffer "
+        $PROG $PROG_OPTIONS>>$PROG_OUTPUT 2>&1 &
+        disown -ar
+        /bin/usleep 500000
+        status Xvfb & >/dev/null && echo_success || echo_failure
+        RETVAL=$?
+        if [ $RETVAL -eq 0 ]; then
+            /bin/touch /var/lock/subsys/Xvfb
+            /sbin/pidof -o  %PPID -x Xvfb > /var/run/Xvfb.pid
+        fi
+        echo
+   		;;
+    stop)
+        echo -n "Shutting down : X Virtual Frame Buffer"
+        killproc $PROG
+        RETVAL=$?
+        [ $RETVAL -eq 0 ] && /bin/rm -f /var/lock/subsys/Xvfb /var/run/Xvfb.pid
+        echo
+        ;;
+    restart|reload)
+    	$0 stop
+    	$0 start
+        RETVAL=$?
+      	;;
+    status)
+    	status Xvfb
+    	RETVAL=$?
+    	;;
+    *)
+     echo $"Usage: $0 (start|stop|restart|status)"
+     exit 1
+esac
+	
+exit $RETVAL
+
